@@ -1,7 +1,11 @@
+// Copyright (c) 2022 Matvey Ryabchikov
+// Copyright (c) 2024 Mihandr
+// MIT License
+
 import { createHmac, timingSafeEqual } from 'crypto'
 import type { Card, CardInfo, CardOwner, PaymentReq, User } from './types.js'
 
-export class SPwAPI {
+export class SPWorlds {
   private authorization: string
   private token: string
 
@@ -19,7 +23,7 @@ export class SPwAPI {
       }
     })
 
-    if (![200, 201, 404].includes(res.status))
+    if (![200, 201].includes(res.status))
       throw new Error(`Ошибка при запросе к API ${res.status} ${res.statusText}`)
     return await res.json()
   }
@@ -94,11 +98,11 @@ export class SPwAPI {
   }
 
   /**
-   * Получение игрока
+   * Получение ника игрока
    * @param discordId ID пользователя Discord
    * @returns Никнейм и Minecraft UUID игрока
    */
-  getUser = async (discordId: string): Promise<User | null> => {
+  findUser = async (discordId: string): Promise<User | null> => {
     return this.requestAPI('GET', `users/${discordId}`, null).then(
       (res: { username: string; uuid: string }) => {
         if (res.username || res.uuid) return res
@@ -127,7 +131,7 @@ export class SPwAPI {
    * @param data Cюда можно поместить любые полезные данных. Ограничение - 100 символов.
    * @returns Ссылка на страницу оплаты, на которую нужно перенаправить пользователя
    */
-  createPayment = async ({
+  initPayment = async ({
     items,
     redirectUrl,
     webhookUrl,

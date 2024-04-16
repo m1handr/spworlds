@@ -6,3 +6,4 @@ tsconfig.build.json
 .prettierrc
 .prettierignore
 .gitignore
+.vscode

@@ -1,27 +1,26 @@
 {
-  "name": "spw-api",
-  "version": "1.0.1",
-  "description": "Package for working with API of the SPWorlds",
+  "name": "spworlds",
+  "version": "2.0.0",
+  "description": "Library to for SPWorlds API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
-    "format": "prettier -w .",
-    "lint": "eslint src"
+    "format": "prettier -w ."
   },
   "files": [
     "/dist/"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/m1handr/spw-api.git"
+    "url": "https://github.com/m1handr/spworlds.git"
   },
   "keywords": [
     "SPWorlds",
     "SPWorlds",
     "API",
-    "spw-api"
+    "spworlds"
   ],
   "author": {
     "name": "Mihandr",
@@ -29,9 +28,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/m1handr/spw-api/issues"
+    "url": "https://github.com/m1handr/spworlds/issues"
   },
-  "homepage": "https://github.com/m1handr/spw-api#readme",
+  "homepage": "https://spworlds.ru",
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^20.12.7",
