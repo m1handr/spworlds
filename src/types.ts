@@ -1,3 +1,7 @@
+// Copyright (c) 2022 Matvey Ryabchikov
+// Copyright (c) 2024 Mihandr
+// MIT License
+
 export type CardOwner = {
   id: string
   username: string
