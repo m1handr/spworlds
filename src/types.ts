@@ -43,7 +43,7 @@ export type PaymentReq = {
   items: Array<{
     name: string
     count: number
-    amount: number
+    price: number
     comment?: string
   }>
   redirectUrl: string

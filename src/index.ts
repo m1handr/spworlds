@@ -144,7 +144,7 @@ export class SPWorlds {
         throw new Error('Название товара не может быть меньше 3 и больше 64 символов')
       if (item.count < 1 || item.count > 9999)
         throw new Error('Количество товара не может быть меньше 1 и больше 9999')
-      if (item.amount < 1 || item.amount > 1728)
+      if (item.price < 1 || item.price > 1728)
         throw new Error('Цена товара не может быть меньше 1 и больше 1728')
       if (item.comment && item.comment.length > 100)
         throw new Error('Комментарий не может быть длиннее 100 символов')

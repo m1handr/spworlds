@@ -61,9 +61,9 @@ const url = await api.initPayment({
 
 ```js
 api.createTransaction({
-    receiver: '55555'
-    amount: '16'
-    comment: 'С днём рождения!'
+  receiver: '55555',
+  amount: '16',
+  comment: 'С днём рождения!'
 })
 ```
 
