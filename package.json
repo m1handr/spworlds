@@ -15,12 +15,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/m1handr/spwapi.git"
+    "url": "https://github.com/m1handr/spw-api.git"
   },
   "keywords": [
     "SPWorlds",
     "SPWorlds",
-    "API"
+    "API",
+    "spw-api"
   ],
   "author": {
     "name": "Mihandr",
@@ -28,9 +29,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/m1handr/spwapi/issues"
+    "url": "https://github.com/m1handr/spw-api/issues"
   },
-  "homepage": "https://github.com/m1handr/spwapi#readme",
+  "homepage": "https://github.com/m1handr/spw-api#readme",
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^20.12.7",
