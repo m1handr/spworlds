@@ -45,7 +45,7 @@ const url = await api.initPayment({
     {
       name: 'SomeName',
       count: '1',
-      amount: '1',
+      price: '1',
       comment: 'SomeComment'
     }
   ],
