@@ -23,7 +23,7 @@ export class SPWorlds {
       }
     })
 
-    if (![200, 201].includes(res.status))
+    if (![200, 201, 404].includes(res.status))
       throw new Error(`Ошибка при запросе к API ${res.status} ${res.statusText}`)
     return await res.json()
   }
