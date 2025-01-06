@@ -96,12 +96,15 @@ const user = await api.getCardOwner()
 
 ### Получение ника игрока
 
-Метод принимает ID игрока в Discord и возвращает его ник, если у него есть вход на сервер.
+Метод принимает ID игрока в Discord и возвращает его nickname и uuid, если у него есть проходка на сервер.
 
 ```js
-const username = await api.findUser('111111111111111111')
+const userData = await api.findUser('111111111111111111')
 
-if (!username) throw 'У этого игрока нет проходки'
+if (!userData) throw 'У этого игрока нет проходки'
+
+console.log(`Никнейм игрока: ${userData.username}`)
+console.log(`Айди игрока: ${userData.uuid}`)
 ```
 
 ### Установка вебхука для карты
