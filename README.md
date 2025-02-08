@@ -30,7 +30,9 @@ const pong = await api.ping()
 
 if (pong) {
   return 'Работает!!'
-} else 'Не работает :('
+} else {
+  return 'Не работает :('
+}
 ```
 
 ### Инициализирование платежной формы
