@@ -1,5 +1,5 @@
 // Copyright (c) 2022 Matvey Ryabchikov
-// Copyright (c) 2024 Mihandr
+// Copyright (c) 2024-2025 Mihandr
 // MIT License
 
 import { createHmac, timingSafeEqual } from 'crypto'
@@ -8,34 +8,51 @@ import type { Card, CardInfo, CardOwner, PaymentReq, User } from './types.js'
 export class SPWorlds {
   private authorization: string
   private token: string
+  private apiTimeout: number | undefined
 
   private requestAPI = async (
     method: 'POST' | 'GET' | 'PUT',
     path: string,
     body: Record<string, unknown> | null
   ): Promise<any> => {
-    const res = await fetch(`https://spworlds.ru/api/public/${path}`, {
-      method: method,
-      body: body ? JSON.stringify(body) : null,
-      headers: {
-        Authorization: this.authorization,
-        'Content-Type': 'application/json'
-      }
-    })
+    const controller = new AbortController()
+    const timeout = this.apiTimeout ? setTimeout(() => controller.abort(), this.apiTimeout) : null
 
-    if (![200, 201, 404].includes(res.status))
-      throw new Error(`Ошибка при запросе к API ${res.status} ${res.statusText}`)
-    return await res.json()
+    try {
+      const res = await fetch(`https://spworlds.ru/api/public/${path}`, {
+        method,
+        body: body ? JSON.stringify(body) : null,
+        headers: {
+          Authorization: this.authorization,
+          'Content-Type': 'application/json'
+        },
+        signal: this.apiTimeout ? controller.signal : undefined
+      })
+
+      if (![200, 201, 404].includes(res.status))
+        throw new Error(`Ошибка при запросе к API ${res.status} ${res.statusText}`)
+
+      return await res.json()
+    } catch (err) {
+      if ((err as Error).name === 'AbortError') {
+        throw new Error(`Превышено время ожидания запроса (${this.apiTimeout}мс)`)
+      }
+      throw err
+    } finally {
+      if (timeout) clearTimeout(timeout)
+    }
   }
 
   /**
    * Класс для работы с SPWorlds API
    * @param id ID карты
    * @param token Токен карты
+   * @param apiTimeout Таймаут запроса к API
    */
-  constructor({ id, token }: { id: string; token: string }) {
+  constructor({ id, token, apiTimeout }: { id: string; token: string; apiTimeout?: number }) {
     this.authorization = `Bearer ${Buffer.from(`${id}:${token}`).toString('base64')}`
     this.token = token
+    this.apiTimeout = apiTimeout
   }
 
   /**
@@ -43,10 +60,7 @@ export class SPWorlds {
    * @returns Состояние API
    */
   ping = async () => {
-    return await this.getCardInfo().then(res => {
-      if (!res) false
-      return true
-    })
+    return !!(await this.getCardInfo().catch(() => false))
   }
 
   /**
@@ -69,7 +83,7 @@ export class SPWorlds {
       receiver,
       amount,
       comment
-    }).then(res => res)
+    })
   }
 
   /**
@@ -77,7 +91,7 @@ export class SPWorlds {
    * @returns Баланс и подключенный webhook
    */
   getCardInfo = async (): Promise<CardInfo> => {
-    return this.requestAPI('GET', 'card', null).then(res => res)
+    return this.requestAPI('GET', 'card', null)
   }
 
   /**
@@ -85,7 +99,7 @@ export class SPWorlds {
    * @returns Никнейм, статус, роли, город, банковские карты и время создания
    */
   getCardOwner = async (): Promise<CardOwner> => {
-    return this.requestAPI('GET', 'accounts/me', null).then(res => res)
+    return this.requestAPI('GET', 'accounts/me', null)
   }
 
   /**
@@ -94,7 +108,7 @@ export class SPWorlds {
    * @returns Массив с банковскими картами
    */
   getCards = async (nickname: string): Promise<Array<Card | undefined>> => {
-    return this.requestAPI('GET', `accounts/${nickname}/cards`, null).then(res => res)
+    return this.requestAPI('GET', `accounts/${nickname}/cards`, null)
   }
 
   /**
@@ -120,7 +134,7 @@ export class SPWorlds {
   setWebhook = async (url: string): Promise<{ id: string; webhook: string }> => {
     return this.requestAPI('PUT', 'card/webhook', {
       url: url
-    }).then(res => res)
+    })
   }
 
   /**
@@ -155,7 +169,7 @@ export class SPWorlds {
       redirectUrl,
       webhookUrl,
       data
-    }).then(res => res)
+    })
   }
 
   /**

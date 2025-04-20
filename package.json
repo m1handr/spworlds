@@ -1,6 +1,6 @@
 {
   "name": "spworlds",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "description": "Library for SPWorlds API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,7 +17,6 @@
     "url": "https://github.com/m1handr/spworlds.git"
   },
   "keywords": [
-    "SPWorlds",
     "SPWorlds",
     "API",
     "spworlds"

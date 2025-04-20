@@ -1,10 +1,11 @@
 // Copyright (c) 2022 Matvey Ryabchikov
-// Copyright (c) 2024 Mihandr
+// Copyright (c) 2024-2025 Mihandr
 // MIT License
 
 export type CardOwner = {
   id: string
   username: string
+  minecraftUUID: string
   status: string
   roles: string[]
   city: {
@@ -26,7 +27,7 @@ export type CardOwner = {
 
 export type CardInfo = {
   balance: number
-  webhook: string
+  webhook: string | null
 }
 
 export type Card = {
