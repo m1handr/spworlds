@@ -15,9 +15,6 @@ export class SPWorlds {
     path: string,
     body: Record<string, unknown> | null
   ): Promise<any> => {
-    const controller = new AbortController()
-    const timeout = this.apiTimeout ? setTimeout(() => controller.abort(), this.apiTimeout) : null
-
     try {
       const res = await fetch(`https://spworlds.ru/api/public/${path}`, {
         method,
@@ -26,7 +23,7 @@ export class SPWorlds {
           Authorization: this.authorization,
           'Content-Type': 'application/json'
         },
-        signal: this.apiTimeout ? controller.signal : undefined
+        signal: this.apiTimeout ? AbortSignal.timeout(this.apiTimeout) : undefined
       })
 
       if (![200, 201, 404].includes(res.status))
@@ -38,8 +35,6 @@ export class SPWorlds {
         throw new Error(`Превышено время ожидания запроса (${this.apiTimeout}мс)`)
       }
       throw err
-    } finally {
-      if (timeout) clearTimeout(timeout)
     }
   }
 
