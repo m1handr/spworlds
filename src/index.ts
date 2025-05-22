@@ -5,7 +5,7 @@
 import { createHmac, timingSafeEqual } from 'crypto'
 import type { Card, CardInfo, CardOwner, PaymentReq, User } from './types.js'
 
-const DEFAULT_API_ENDPOINT = 'spworlds.ru'
+const DEFAULT_API_ENDPOINT = 'https://spworlds.ru'
 
 export class SPWorlds {
   private authorization: string
@@ -19,7 +19,7 @@ export class SPWorlds {
     body: Record<string, unknown> | null
   ): Promise<any> => {
     try {
-      const res = await fetch(`https://${this.APIEndpoint}/api/public/${path}`, {
+      const res = await fetch(`${this.APIEndpoint}/api/public/${path}`, {
         method,
         body: body ? JSON.stringify(body) : null,
         headers: {
@@ -46,7 +46,7 @@ export class SPWorlds {
    * @param id ID карты
    * @param token Токен карты
    * @param apiTimeout Таймаут запроса к API
-   * @param APIEndpoint Вы можете указать другой API сервер, например spworlds.org (spworlds.ru - по умолчанию)
+   * @param APIEndpoint Вы можете указать другой API сервер (например https://spworlds.org). По умолчанию: https://spworlds.ru
    */
   constructor({
     id,
