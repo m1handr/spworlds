@@ -6,6 +6,7 @@ import { createHmac, timingSafeEqual } from 'crypto'
 import type { Card, CardInfo, CardOwner, PaymentReq, User } from './types.js'
 
 const DEFAULT_API_ENDPOINT = 'spworlds.ru'
+const MIRROR_API_ENDPOINT = 'spworlds.org'
 
 export class SPWorlds {
   private authorization: string
@@ -47,22 +48,25 @@ export class SPWorlds {
    * @param token Токен карты
    * @param apiTimeout Таймаут запроса к API
    * @param APIEndpoint Вы можете указать другой API сервер, например spworlds.org (spworlds.ru - по умолчанию)
+   * @param mirror Переключатель на зеркало сайта если не знаете другой Апи ендпоинт
    */
   constructor({
     id,
     token,
     apiTimeout,
-    APIEndpoint = DEFAULT_API_ENDPOINT
+    APIEndpoint,
+    mirror = false
   }: {
     id: string
     token: string
     apiTimeout?: number
     APIEndpoint?: string
+    mirror?: boolean
   }) {
     this.authorization = `Bearer ${Buffer.from(`${id}:${token}`).toString('base64')}`
     this.token = token
     this.apiTimeout = apiTimeout
-    this.APIEndpoint = APIEndpoint
+    this.APIEndpoint = APIEndpoint || (mirror ? MIRROR_API_ENDPOINT : DEFAULT_API_ENDPOINT)
   }
 
   /**
@@ -114,7 +118,7 @@ export class SPWorlds {
 
   /**
    * Получение карт пользователя
-   * @param Nickname Никнейм пользователя
+   * @param nickname Никнейм пользователя
    * @returns Массив с банковскими картами
    */
   getCards = async (nickname: string): Promise<Array<Card | undefined>> => {
