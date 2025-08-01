@@ -160,7 +160,7 @@ export class SPWorlds {
     redirectUrl,
     webhookUrl,
     data
-  }: PaymentReq): Promise<{ url: string }> => {
+  }: PaymentReq): Promise<{ code: string, card: string; url: string }> => {
     if (data && data.length > 100) throw new Error('Data не может быть длиннее 100 символов')
 
     for (const item of items) {
